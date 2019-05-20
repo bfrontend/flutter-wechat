@@ -2,12 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_wechat/constants.dart';
 
 import '../constants.dart' show AppColors, AppStyles, Constants;
-import '../model/conversation.dart' show Conversation, mockConversations;
+import '../model/conversation.dart' show Conversation, Device, ConversationPageData;
 
 class ConversationPage extends StatefulWidget {
   @override
   _ConversationPageState createState() => _ConversationPageState();
 }
+
 
 class _ConversationItem extends StatelessWidget {
   const _ConversationItem({Key key, this.conversation})
@@ -133,16 +134,86 @@ class _ConversationItem extends StatelessWidget {
   }
 }
 
+class _DeviceInfoItem extends StatelessWidget {
+  const _DeviceInfoItem({Key key, this.device: Device.WIN}) :
+      assert(device != null);
+  final Device device;
 
-class _ConversationPageState extends State<ConversationPage> {
+  int get iconName {
+    return device == Device.WIN ? 0xe6b3 : 0xe61c;
+  }
+
+  String get deviceName {
+    return device == Device.WIN ? 'windows' : 'Mac';
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
+      padding: const EdgeInsets.only(
+        left: 24.0,
+        top: 10.0,
+        right: 24.0,
+        bottom: 10.0
+      ),
+      decoration: BoxDecoration(
+        border: Border(
+          bottom: BorderSide(
+            width: Constants.DividerWidth,
+            color: Color(AppColors.DividerColor)
+          )
+        )
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
+          Icon(
+            IconData(
+              this.iconName,
+              fontFamily: Constants.IconFontFamily
+            ),
+            size: 24.0,
+            color: Color(AppColors.DeviceInfoItemIcon),
+          ),
+          SizedBox(
+            width: 16.0,
+          ),
+          Text(
+            '$deviceName 微信已登录',
+            style: AppStyles.DeviceInfoTextStyle,
+          )
+        ],
+      ),
+    );
+  }
+}
+
+
+class _ConversationPageState extends State<ConversationPage> {
+
+  final ConversationPageData data = ConversationPageData.mock();
+
+  @override
+  Widget build(BuildContext context) {
+    var mockConversations = data.conversations;
+    return Container(
       child: ListView.builder(
         itemBuilder: (BuildContext context, int index){
-          return _ConversationItem(conversation: mockConversations[index],);
+          if (data.device != null) {
+            // 已在其他设备登录
+            if (index == 0) {
+              return _DeviceInfoItem(device: data.device,);
+            }
+            return _ConversationItem(conversation: mockConversations[index - 1],);
+          } else {
+            // 未在其他设备登录
+            return _ConversationItem(conversation: mockConversations[index],);
+          }
+
+
         },
-        itemCount: mockConversations.length,
+        itemCount: data.device != null ? mockConversations.length + 1 : mockConversations.length,
       ),
     );
   }

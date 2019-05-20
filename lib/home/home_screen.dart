@@ -3,6 +3,7 @@ import 'package:flutter_wechat/constants.dart';
 import '../constants.dart' show Constants;
 
 import './conversation_page.dart';
+import './contacts_page.dart';
 
 enum ActionItems {
   GROUP_CHAT,
@@ -87,7 +88,7 @@ class _HomeScreenState extends State<HomeScreen> {
     _pageController = PageController(initialPage: _currentIndex);
     _pages = [
       ConversationPage(),
-      Container(child: Text('通讯录')),
+      ContactsPage(),
       Container(child: Text('发现')),
       Container(child: Text('我'))
     ];
@@ -119,7 +120,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
     final BottomNavigationBar botNavBar = BottomNavigationBar(
       fixedColor: const Color(AppColors.TabIconActive),
-      selectedFontSize: 14.0,
+      selectedFontSize: 12.0,
       items: _navigationViews.map((NavigationIconView view){
         return view.item;
       }).toList(),
