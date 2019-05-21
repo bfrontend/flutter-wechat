@@ -4,6 +4,38 @@ import '../constants.dart' show Constants, AppColors;
 
 import '../model/contacts.dart' show Contact, ContactsPageData;
 
+
+const INDEX_BAR_WORDS = <String>[
+  "↑",
+  "☆",
+  "A",
+  "B",
+  "C",
+  "D",
+  "E",
+  "F",
+  "G",
+  "H",
+  "I",
+  "J",
+  "K",
+  "L",
+  "M",
+  "N",
+  "O",
+  "P",
+  "Q",
+  "R",
+  "S",
+  "T",
+  "U",
+  "V",
+  "W",
+  "X",
+  "Y",
+  "Z"
+];
+
 class ContactsPage extends StatefulWidget {
   @override
   _ContactsPageState createState() => _ContactsPageState();
@@ -48,26 +80,48 @@ class _ContactsPageState extends State<ContactsPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: ListView.builder(
-        itemBuilder: (BuildContext context, int index){
-          if (index < _functionButtons.length) {
-            return _functionButtons[index];
-          }
-          int _contactIndex = index - _functionButtons.length;
-          Contact _contact = _contacts[_contactIndex];
-          bool _isGroupTitle = true;
-          if (_contactIndex >= 1 && _contact.nameIndex == _contacts[_contactIndex - 1].nameIndex) {
-            _isGroupTitle = false;
-          }
-          return _ContactItem(
-            avatar: _contact.avatar,
-            title: _contact.name,
-            groupTitle: _isGroupTitle ? _contact.nameIndex : null,
-          );
-        },
-        itemCount: _contacts.length + 4,
-      ),
+    
+    final List<Widget> _letters = INDEX_BAR_WORDS.map((String word) {
+      return Expanded(
+        child: Text(
+            word
+        ),
+      );
+    }).toList();
+    
+    return Stack(
+      children: <Widget>[
+        Container(
+          child: ListView.builder(
+              itemBuilder: (BuildContext context, int index){
+            if (index < _functionButtons.length) {
+              return _functionButtons[index];
+            }
+            int _contactIndex = index - _functionButtons.length;
+            Contact _contact = _contacts[_contactIndex];
+            bool _isGroupTitle = true;
+            if (_contactIndex >= 1 && _contact.nameIndex == _contacts[_contactIndex - 1].nameIndex) {
+              _isGroupTitle = false;
+            }
+            return _ContactItem(
+              avatar: _contact.avatar,
+              title: _contact.name,
+              groupTitle: _isGroupTitle ? _contact.nameIndex : null,
+            );
+          },
+          itemCount: _contacts.length + 4,
+          ),
+        ),
+        Positioned(
+          right: 0.0,
+          width: Constants.IndexBarWidth,
+          top: 0.0,
+          bottom: 0.0,
+          child: Column(
+            children: _letters,
+          ),
+        )
+      ],
     );
   }
 }

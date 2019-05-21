@@ -129,7 +129,8 @@ class _HomeScreenState extends State<HomeScreen> {
       onTap: (int index) {
         setState(() {
           _currentIndex = index;
-          _pageController.animateToPage(_currentIndex, duration: Duration(milliseconds: 200), curve: Curves.bounceIn);
+//          _pageController.animateToPage(_currentIndex, duration: Duration(milliseconds: 200), curve: Curves.bounceIn);
+          _pageController.jumpToPage(_currentIndex);
         });
       },
     );
@@ -191,6 +192,7 @@ class _HomeScreenState extends State<HomeScreen> {
         itemBuilder: (BuildContext context, int index) {
           return _pages[index];
         },
+        physics: NeverScrollableScrollPhysics(),
         controller: _pageController,
         itemCount: _pages.length,
         onPageChanged: (int index) {
