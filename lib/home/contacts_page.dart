@@ -117,6 +117,15 @@ class _ContactsPageState extends State<ContactsPage> {
     return INDEX_BAR_WORDS[index];
   }
 
+  void _jumpToIndex(String letter) {
+    if (_letterPosMap.isNotEmpty) {
+      final _pos = _letterPosMap[letter];
+      if(_pos != null) {
+        _scrollController.animateTo(_pos, curve: Curves.easeOut, duration: Duration(milliseconds: 200));
+      }
+    }
+  }
+
   Widget _buildIndexBar(BuildContext context, BoxConstraints constraints) {
     final _totalHeight = constraints.biggest.height;
     final double _tileHeight = _totalHeight / _letters.length; // 取整
@@ -130,7 +139,7 @@ class _ContactsPageState extends State<ContactsPage> {
           _indexBarBg = Colors.black26;
         });
         _currentLetter = _getLetter(context, _tileHeight, details.globalPosition);
-        _scrollController.animateTo(_letterPosMap[_currentLetter], curve: Curves.easeIn, duration: Duration(milliseconds: 200));
+        _jumpToIndex(_currentLetter);
       },
       onVerticalDragEnd: (DragEndDetails details) {
         setState(() {
@@ -149,50 +158,74 @@ class _ContactsPageState extends State<ContactsPage> {
           _indexBarBg = Colors.black26;
         });
         _currentLetter = _getLetter(context, _tileHeight, details.globalPosition);
-        _scrollController.animateTo(_letterPosMap[_currentLetter], curve: Curves.easeIn, duration: Duration(milliseconds: 200));
+        _jumpToIndex(_currentLetter);
       },
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: <Widget>[
-        Container(
-          child: ListView.builder(
-              controller: _scrollController,
-              itemBuilder: (BuildContext context, int index){
-              if (index < _functionButtons.length) {
-                return _functionButtons[index];
-              }
-              int _contactIndex = index - _functionButtons.length;
-              Contact _contact = _contacts[_contactIndex];
-              bool _isGroupTitle = true;
-              if (_contactIndex >= 1 && _contact.nameIndex == _contacts[_contactIndex - 1].nameIndex) {
-                _isGroupTitle = false;
-              }
-              return _ContactItem(
-                avatar: _contact.avatar,
-                title: _contact.name,
-                groupTitle: _isGroupTitle ? _contact.nameIndex : null,
-              );
-            },
-            itemCount: _contacts.length + 4,
-          ),
+
+    final List<Widget> _body = [
+      Container(
+        child: ListView.builder(
+          controller: _scrollController,
+          itemBuilder: (BuildContext context, int index){
+            if (index < _functionButtons.length) {
+              return _functionButtons[index];
+            }
+            int _contactIndex = index - _functionButtons.length;
+            Contact _contact = _contacts[_contactIndex];
+            bool _isGroupTitle = true;
+            if (_contactIndex >= 1 && _contact.nameIndex == _contacts[_contactIndex - 1].nameIndex) {
+              _isGroupTitle = false;
+            }
+            return _ContactItem(
+              avatar: _contact.avatar,
+              title: _contact.name,
+              groupTitle: _isGroupTitle ? _contact.nameIndex : null,
+            );
+          },
+          itemCount: _contacts.length + 4,
         ),
-        Positioned(
-          right: 0.0,
-          width: Constants.IndexBarWidth,
-          top: 0.0,
-          bottom: 0.0,
-          child: Container(
-            color: _indexBarBg,
-            child: LayoutBuilder(
-              builder: _buildIndexBar,
-            )
-          ),
-        )
-      ],
+      ),
+      Positioned(
+        right: 0.0,
+        width: Constants.IndexBarWidth,
+        top: 0.0,
+        bottom: 0.0,
+        child: Container(
+          color: _indexBarBg,
+          child: LayoutBuilder(
+            builder: _buildIndexBar,
+          )
+        ),
+      ),
+    ];
+
+    if (_currentLetter.isNotEmpty) {
+      _body.add(
+          Center(
+            child: Container(
+                width: Constants.IndexLetterBoxSize,
+                height: Constants.IndexLetterBoxSize,
+                decoration: BoxDecoration(
+                    color: AppColors.IndexLetterBoxBg,
+                    borderRadius: BorderRadius.all(Radius.circular(Constants.IndexLetterBoxRadius))
+                ),
+                child: Center(
+                  child: Text(
+                    _currentLetter,
+                    style: AppStyles.IndexLetterBoxTextStyle,
+                  ),
+                )
+            ),
+          )
+      );
+    }
+
+    return Stack(
+      children: _body,
     );
   }
 }
