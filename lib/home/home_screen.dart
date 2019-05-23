@@ -4,6 +4,7 @@ import '../constants.dart' show Constants;
 
 import './conversation_page.dart';
 import './contacts_page.dart';
+import './discover_page.dart';
 
 enum ActionItems {
   GROUP_CHAT,
@@ -89,7 +90,7 @@ class _HomeScreenState extends State<HomeScreen> {
     _pages = [
       ConversationPage(),
       ContactsPage(),
-      Container(child: Text('发现')),
+      DiscoverPage(),
       Container(child: Text('我'))
     ];
   }

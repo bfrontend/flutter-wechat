@@ -19,6 +19,10 @@ class AppColors {
   static const ContactGroupTitleBg = 0xffebebeb;
   static const contactGroupTitleText = 0xff888888;
   static const IndexLetterBoxBg = Colors.black45;
+  static const BackgroundColor = 0xffededed;
+  static const NewTagBg = 0xfffa5251;
+  static const ButtonDesText = 0xff8c8c8c;
+  static const ButtonArrowColor = 0xffadadad;
 }
 
 class AppStyles {
@@ -51,6 +55,18 @@ class AppStyles {
     fontSize: 64.0,
     color: Colors.white
   );
+
+  static const ButtonDesTextStyle = TextStyle(
+      fontSize: 12.0,
+      color: Color(AppColors.ButtonDesText),
+      fontWeight: FontWeight.bold
+  );
+  static const NewTagTextStyle = TextStyle(
+      fontSize: Constants.DesTextSize,
+      color: Colors.white,
+      fontWeight: FontWeight.bold
+  );
+
 }
 
 class Constants {
@@ -63,4 +79,7 @@ class Constants {
   static const IndexBarWidth = 24.0;
   static const IndexLetterBoxSize = 114.0;
   static const IndexLetterBoxRadius = 4.0;
+  static const FullWidthIconButtonIconSize = 24.0;
+  static const AvatarRadius = 4.0;
+  static const DesTextSize = 13.0;
 }
