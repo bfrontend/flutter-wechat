@@ -13,6 +13,6 @@ class Profile {
 }
 
 const Profile me = Profile(
-    name: '张伟',
-    avatar: 'https://randomuser.me/api/portraits/men/77.jpg',
+    name: '罗大佑',
+    avatar: 'http://img3.doubanio.com/view/thing_review/l/public/p1531476.jpg',
     account: 'a_test_account');
