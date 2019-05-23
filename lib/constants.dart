@@ -23,6 +23,9 @@ class AppColors {
   static const NewTagBg = 0xfffa5251;
   static const ButtonDesText = 0xff8c8c8c;
   static const ButtonArrowColor = 0xffadadad;
+  static const HeaderCardTitleText = 0xff353535;
+  static const HeaderCardBg = Colors.white;
+  static const HeaderCardDesText = 0xff7f7f7f;
 }
 
 class AppStyles {
@@ -65,6 +68,18 @@ class AppStyles {
       fontSize: Constants.DesTextSize,
       color: Colors.white,
       fontWeight: FontWeight.bold
+  );
+
+  static const HeaderCardTitleTextStyle = TextStyle(
+      fontSize: 20.0,
+      color: Color(AppColors.HeaderCardTitleText),
+      fontWeight: FontWeight.bold
+  );
+
+  static const HeaderCardDesTextStyle = TextStyle(
+      fontSize: 14.0,
+      color: Color(AppColors.HeaderCardDesText),
+      fontWeight: FontWeight.normal
   );
 
 }
