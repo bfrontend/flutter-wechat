@@ -29,12 +29,12 @@ class MyApp extends StatelessWidget {
   }
 
   showWelcomePage() {
-    bool showWelcome = sp.getBool(SharedPreferencesKeys.showWelcome);
-    if (showWelcome == null || showWelcome == true) {
-      return WelcomePage();
-    } else {
-      return HomeScreen();
-    }
+     bool showWelcome = sp.getBool(SharedPreferencesKeys.showWelcome);
+     if (showWelcome == null || showWelcome == true) {
+       return WelcomePage();
+     } else {
+       return HomeScreen();
+     }
   }
   @override
   Widget build(BuildContext context) {
